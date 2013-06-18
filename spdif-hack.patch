@@ -1,0 +1,48 @@
+diff --git a/sound/soc/bcm2708/bcm2708-i2s.c b/sound/soc/bcm2708/bcm2708-i2s.c
+index ba41ef4..63562f5 100644
+--- a/sound/soc/bcm2708/bcm2708-i2s.c
++++ b/sound/soc/bcm2708/bcm2708-i2s.c
+@@ -530,6 +530,9 @@ static int bcm2708_i2s_hw_params(struct snd_pcm_substream *substream,
+ 	case SND_SOC_DAIFMT_I2S:
+ 		data_delay = 1;
+ 		break;
++	case SND_SOC_DAIFMT_LEFT_J:
++		data_delay = 0;
++		break;
+ 	default:
+ 		/* TODO
+ 		 * Others are possible but are not implemented at the moment.
+diff --git a/sound/soc/bcm2708/rpi-tda1541a.c b/sound/soc/bcm2708/rpi-tda1541a.c
+index 06f993d..2367f41 100644
+--- a/sound/soc/bcm2708/rpi-tda1541a.c
++++ b/sound/soc/bcm2708/rpi-tda1541a.c
+@@ -37,12 +37,12 @@ static struct snd_soc_ops snd_rpi_tda1541a_ops = {
+ static struct snd_soc_dai_link snd_rpi_tda1541a_dai[] = {
+ {
+ 	.name		= "TDA1541A",
+-	.stream_name	= "TDA1541A HiFi",
++	.stream_name	= "TDA1541A SPDIF HiFi",
+ 	.cpu_dai_name	= "bcm2708-i2s.0",
+ 	.codec_dai_name	= "tda1541a-hifi",
+ 	.platform_name	= "bcm2708-pcm-audio.0",
+ 	.codec_name	= "tda1541a-codec",
+-	.dai_fmt	= SND_SOC_DAIFMT_I2S | SND_SOC_DAIFMT_NB_NF |
++	.dai_fmt	= SND_SOC_DAIFMT_LEFT_J | SND_SOC_DAIFMT_NB_NF |
+ 				SND_SOC_DAIFMT_CBS_CFS,
+ 	.ops		= &snd_rpi_tda1541a_ops,
+ 	.init		= snd_rpi_tda1541a_init,
+diff --git a/sound/soc/codecs/tda1541a.c b/sound/soc/codecs/tda1541a.c
+index b848624..23ff4c9 100644
+--- a/sound/soc/codecs/tda1541a.c
++++ b/sound/soc/codecs/tda1541a.c
+@@ -20,8 +20,8 @@ static struct snd_soc_dai_driver tda1541a_dai = {
+ 	.playback = {
+ 		.channels_min = 2,
+ 		.channels_max = 2,
+-		.rates = SNDRV_PCM_RATE_8000_96000,
+-		.formats = SNDRV_PCM_FMTBIT_S16_LE,
++                .rates = SNDRV_PCM_RATE_8000_192000,
++                .formats = SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S32_LE | SNDRV_PCM_FMTBIT_SPECIAL
+ 	},
+ };
+ 
