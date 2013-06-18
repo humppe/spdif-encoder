@@ -24,7 +24,7 @@ capacitor and the module). See /2/ for other possibilities.
 4. Install e.g. avconv application for decoding your audio files
     apt-get install libav-tools
 
-5..gcc -O3 spdif-encoder.c -o spdif-encoder
+5. gcc -O3 spdif-encoder.c -o spdif-encoder
 
 6. Load kernel modules -- the spdif-output-hack is applied to tda1541a -drivers.
 
